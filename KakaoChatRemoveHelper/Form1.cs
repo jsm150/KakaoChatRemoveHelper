@@ -18,6 +18,8 @@ namespace KakaoChatRemoveHelper
 
         private static int _setKey = Settings.Default.KeySetting;
         private static bool _IskeySetMode = false;
+        private static bool _IsBindChatBoard = false;
+        private static IntPtr _chatBoard;
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -31,12 +33,14 @@ namespace KakaoChatRemoveHelper
             if (code < 0 || wParam != (IntPtr)WM_KEYDOWN || key != _setKey)
                 return CallNextHookEx(Hhook, code, (int)wParam, lParam);
 
-            var chatBoard = FindKakaoChatBoard();
-            if (chatBoard == IntPtr.Zero)
+            if (!_IsBindChatBoard)
+                _chatBoard = FindKakaoChatBoard();
+
+            if (_chatBoard == IntPtr.Zero)
                 return CallNextHookEx(Hhook, code, (int)wParam, lParam);
 
             MouseRightClick();
-            DeleteChat(chatBoard);
+            DeleteChat(_chatBoard);
             return (IntPtr)1;
         }
 
@@ -58,9 +62,15 @@ namespace KakaoChatRemoveHelper
         {
             PostMessage(chatBoard, (IntPtr)0x07E9, (IntPtr)0x76, (IntPtr)0xD378C20);
             var deletePopUp = SearchWindow("EVA_Window_Dblclk", "");
+            if (deletePopUp == IntPtr.Zero)
+            {
+                _IsBindChatBoard = false;
+                return;
+            }
 
             PostMessage(deletePopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0AE0042);
             PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
+            _IsBindChatBoard = true;
         }
 
         private static IntPtr SearchWindow(string @class, string caption)
