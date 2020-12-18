@@ -40,6 +40,7 @@ namespace KakaoChatRemoveHelper
                 return CallNextHookEx(Hhook, code, (int)wParam, lParam);
 
             MouseRightClick();
+            Thread.Sleep(10);
             DeleteChat(_chatBoard);
             return (IntPtr)1;
         }
@@ -69,6 +70,7 @@ namespace KakaoChatRemoveHelper
             }
 
             PostMessage(deletePopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0AE0042);
+            Thread.Sleep(10);
             PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
             _IsBindChatBoard = true;
         }
