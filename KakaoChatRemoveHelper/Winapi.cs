@@ -5,6 +5,8 @@ namespace WinApi
 {
     internal class Winapi
     {
+        public delegate IntPtr LowLevelKeyProc(int nCode, IntPtr wParam, IntPtr lParam);
+
         #region VirtualKey
 
         public enum VKeys
@@ -252,12 +254,10 @@ namespace WinApi
 
         public const int WM_MOUSEMOVE = 0x0200;
 
+        public static LowLevelKeyProc KeyProc;
+
         // 전역변수
         public static IntPtr Hhook { get; set; }
-
-        public delegate IntPtr LowLevelKeyProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        public static LowLevelKeyProc KeyProc;
 
         public static void SetHook()
         {
@@ -270,7 +270,6 @@ namespace WinApi
             UnhookWindowsHookEx(Hhook);
         }
 
-        
 
         // 내 프로그램에서 후킹을 시작할 때 사용
         [DllImport("user32.dll")]
