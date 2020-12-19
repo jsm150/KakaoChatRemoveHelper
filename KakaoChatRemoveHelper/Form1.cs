@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -40,7 +41,7 @@ namespace KakaoChatRemoveHelper
                 return CallNextHookEx(Hhook, code, (int)wParam, lParam);
 
             MouseRightClick();
-            Thread.Sleep(10);
+            Thread.Sleep(5);
             DeleteChat(_chatBoard);
             return (IntPtr)1;
         }
@@ -48,7 +49,7 @@ namespace KakaoChatRemoveHelper
         private static void MouseRightClick()
         {
             mouse_event(0x8, 0, 0, 0, 0);
-            Thread.Sleep(10);
+            Thread.Sleep(20);
             mouse_event(0x10, 0, 0, 0, 0);
         }
 
@@ -62,7 +63,7 @@ namespace KakaoChatRemoveHelper
         private static void DeleteChat(IntPtr chatBoard)
         {
             PostMessage(chatBoard, (IntPtr)0x07E9, (IntPtr)0x76, (IntPtr)0xD378C20);
-            var deletePopUp = SearchWindow("EVA_Window_Dblclk", "");
+            var deletePopUp = SearchPopUp("EVA_Window_Dblclk", "", (305, 199));
             if (deletePopUp == IntPtr.Zero)
             {
                 _IsBindChatBoard = false;
@@ -70,27 +71,29 @@ namespace KakaoChatRemoveHelper
             }
 
             PostMessage(deletePopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0AE0042);
-            Thread.Sleep(10);
+            Thread.Sleep(5);
             PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
             _IsBindChatBoard = true;
+
+            var errorPopUp = SearchPopUp("EVA_Window_Dblclk", "", (230, 112), (237, 112));
+            if (errorPopUp == IntPtr.Zero) 
+                return;
+            PostMessage(deletePopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0AE0042);
+            Thread.Sleep(5);
+            PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
         }
 
-        private static IntPtr SearchWindow(string @class, string caption)
+        private static IntPtr SearchPopUp(string @class, string caption, params (int width, int height)[] size)
         {
-            Thread.Sleep(20);
-            const int width = 305;
-            const int height = 199;
+            
             var basic = IntPtr.Zero;
             while (true)
             {
                 var a = FindWindowEx(IntPtr.Zero, basic, @class, caption);
-                basic = a switch
-                {
-                    var x when x == IntPtr.Zero => GetWindow(basic, 2),
-                    _ => a
-                };
+                basic = a == IntPtr.Zero ? GetWindow(basic, 2) : a;
+
                 GetWindowRect(basic, out var rect);
-                if ((rect.Width, rect.Height) == (width, height))
+                if (size.Any(t => (rect.Width, rect.Height) == t))
                     return basic;
 
                 if (basic == IntPtr.Zero)

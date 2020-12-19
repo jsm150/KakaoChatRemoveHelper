@@ -104,7 +104,7 @@ namespace KakaoChatRemoveHelper
             this.lbl_KeyStateMessage.Name = "lbl_KeyStateMessage";
             this.lbl_KeyStateMessage.Size = new System.Drawing.Size(224, 20);
             this.lbl_KeyStateMessage.TabIndex = 3;
-            this.lbl_KeyStateMessage.Text = "카카오톡 채팅 삭제 도우미 v0.2\r\n";
+            this.lbl_KeyStateMessage.Text = "카카오톡 채팅 삭제 도우미 v0.3\r\n";
             // 
             // label2
             // 
@@ -138,7 +138,7 @@ namespace KakaoChatRemoveHelper
             this.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Ver 0.2";
+            this.Text = "Ver 0.3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
