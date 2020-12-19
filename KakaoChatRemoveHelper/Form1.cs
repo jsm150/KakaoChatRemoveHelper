@@ -49,7 +49,7 @@ namespace KakaoChatRemoveHelper
         private static void MouseRightClick()
         {
             mouse_event(0x8, 0, 0, 0, 0);
-            Thread.Sleep(20);
+            Thread.Sleep(5);
             mouse_event(0x10, 0, 0, 0, 0);
         }
 
@@ -85,7 +85,7 @@ namespace KakaoChatRemoveHelper
 
         private static IntPtr SearchPopUp(string @class, string caption, params (int width, int height)[] size)
         {
-            
+            Thread.Sleep(20);
             var basic = IntPtr.Zero;
             while (true)
             {
