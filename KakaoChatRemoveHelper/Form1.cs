@@ -75,12 +75,13 @@ namespace KakaoChatRemoveHelper
             PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
             _IsBindChatBoard = true;
 
+            Thread.Sleep(20);
             var errorPopUp = SearchPopUp("EVA_Window_Dblclk", "", (230, 112), (237, 112));
             if (errorPopUp == IntPtr.Zero) 
                 return;
-            PostMessage(deletePopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0AE0042);
+            PostMessage(errorPopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0570066);
             Thread.Sleep(5);
-            PostMessage(deletePopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0AE0042);
+            PostMessage(errorPopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0570066);
         }
 
         private static IntPtr SearchPopUp(string @class, string caption, params (int width, int height)[] size)
@@ -113,6 +114,10 @@ namespace KakaoChatRemoveHelper
                     notifyIcon1.Visible = false;
                     ShowInTaskbar = true;
                     break;
+                case FormWindowState.Maximized:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
