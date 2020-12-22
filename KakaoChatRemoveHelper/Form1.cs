@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using KakaoChatRemoveHelper.Properties;
 using static WinApi.Winapi;
@@ -59,10 +60,10 @@ namespace KakaoChatRemoveHelper
             return FindWindowEx(main, IntPtr.Zero, "EVA_VH_ListControl_Dblclk", null);
         }
 
-        private static void DeleteChat(IntPtr chatBoard)
+        private static async Task DeleteChat(IntPtr chatBoard)
         {
             PostMessage(chatBoard, (IntPtr)0x07E9, (IntPtr)0x76, (IntPtr)0xD378C20);
-            var deletePopUp = SearchPopUp("EVA_Window_Dblclk", "", (305, 199));
+            var deletePopUp = await SearchPopUp("EVA_Window_Dblclk", "", (305, 199));
             if (deletePopUp == IntPtr.Zero)
             {
                 _IsBindChatBoard = false;
@@ -75,7 +76,7 @@ namespace KakaoChatRemoveHelper
             _IsBindChatBoard = true;
 
             Thread.Sleep(20);
-            var errorPopUp = SearchPopUp("EVA_Window_Dblclk", "", (230, 112), (237, 112));
+            var errorPopUp = await SearchPopUp("EVA_Window_Dblclk", "", (230, 112), (237, 112));
             if (errorPopUp == IntPtr.Zero) 
                 return;
             PostMessage(errorPopUp, (IntPtr)0x0201, (IntPtr)0x1, (IntPtr)0x0570066);
@@ -83,9 +84,9 @@ namespace KakaoChatRemoveHelper
             PostMessage(errorPopUp, (IntPtr)0x0202, IntPtr.Zero, (IntPtr)0x0570066);
         }
 
-        private static IntPtr SearchPopUp(string @class, string caption, params (int width, int height)[] size)
+        private static async Task<IntPtr> SearchPopUp(string @class, string caption, params (int width, int height)[] size)
         {
-            Thread.Sleep(50);
+            await Task.Delay(50);
             var basic = IntPtr.Zero;
             while (true)
             {
