@@ -14,7 +14,6 @@ namespace KakaoChatRemoveHelper
         public Form1()
         {
             InitializeComponent();
-            
         }
 
         private static int _setKey = Settings.Default.KeySetting;
@@ -86,7 +85,7 @@ namespace KakaoChatRemoveHelper
 
         private static IntPtr SearchPopUp(string @class, string caption, params (int width, int height)[] size)
         {
-            Thread.Sleep(20);
+            Thread.Sleep(50);
             var basic = IntPtr.Zero;
             while (true)
             {
