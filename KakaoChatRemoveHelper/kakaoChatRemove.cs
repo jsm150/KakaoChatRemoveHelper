@@ -13,13 +13,13 @@ namespace KakaoChatRemoveHelper
     {
         private static bool _IsBindChatBoard;
         private static IntPtr _chatBoard;
-        public static int Setupkey { get; set; } = Settings.Default.KeySetting;
+        public static int DeleteKey { get; set; } = Settings.Default.KeySetting;
 
         public static IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
         {
             var key = Marshal.ReadInt32(lParam);
 
-            if (code < 0 || wParam != (IntPtr) WM_KEYDOWN || key != Setupkey)
+            if (code < 0 || wParam != (IntPtr) WM_KEYDOWN || key != DeleteKey)
                 return CallNextHookEx(Hhook, code, (int) wParam, lParam);
 
             if (!_IsBindChatBoard)

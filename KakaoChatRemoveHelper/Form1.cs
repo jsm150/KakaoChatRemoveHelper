@@ -20,7 +20,7 @@ namespace KakaoChatRemoveHelper
             KeyProc += kakaoChatRemove.HookProc;
             KeyProc += KeySetting;
             SetHook();
-            txt_KeyState.Text = new KeysConverter().ConvertToInvariantString(kakaoChatRemove.Setupkey);
+            txt_KeyState.Text = new KeysConverter().ConvertToInvariantString(kakaoChatRemove.DeleteKey);
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -71,10 +71,10 @@ namespace KakaoChatRemoveHelper
             if (!_IskeySetMode || code < 0 || wParam != (IntPtr) WM_KEYDOWN)
                 return CallNextHookEx(Hhook, code, (int) wParam, lParam);
 
-            kakaoChatRemove.Setupkey = Marshal.ReadInt32(lParam);
-            Settings.Default.KeySetting = kakaoChatRemove.Setupkey;
+            kakaoChatRemove.DeleteKey = Marshal.ReadInt32(lParam);
+            Settings.Default.KeySetting = kakaoChatRemove.DeleteKey;
             Settings.Default.Save();
-            txt_KeyState.Text = new KeysConverter().ConvertToInvariantString(kakaoChatRemove.Setupkey);
+            txt_KeyState.Text = new KeysConverter().ConvertToInvariantString(kakaoChatRemove.DeleteKey);
             lbl_KeyStateMessage.Text = @"설정이 완료되었습니다.";
             _IskeySetMode = false;
             return (IntPtr) 1;
